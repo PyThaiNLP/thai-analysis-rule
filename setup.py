@@ -14,7 +14,7 @@ setup(
     description="Thai Analysis Rule Tool",
     long_description=readme,
     long_description_content_type="text/markdown",
-    author="PyThaiNLP",
+    author="Wannaphong Phatthiyaphaibun",
     author_email="wannaphong@kkumail.com",
     url="https://github.com/PyThaiNLP/thai-analysis-rule",
     packages=find_packages(),
