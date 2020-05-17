@@ -10,6 +10,15 @@ from pythainlp.tokenize import word_tokenize
 templates_dir = os.path.join(os.path.dirname(thaianalysisrule.__file__), 'corpus')
 
 def readfile_dict(filename:str) -> str:
+    """
+    Read Dict File
+
+    :param str filename: filename on thaianalysisrule.corpus
+
+    :return: data dict
+    :rtype: str
+    """
+    global templates_dir
     _path = os.path.join(templates_dir, filename)
     with open(_path, "r", encoding="utf-8-sig") as f:
         _data = ["'"+i.strip()+"'" for i in f.readlines()]
@@ -45,18 +54,35 @@ RAUX -> {}
 CONJ -> {}
 VATT -> {}
 """.format(N_dict, VERE_dict, ADV_dict, PREP_dict, DET_dict, CLAS_dict, NUM_dict, LAUX_dict, RAUX_dcit, CONJ_dict, VATT_dict)
-thaigrammar = nltk.CFG.fromstring(RULE)
-rd_parser = nltk.RecursiveDescentParser(thaigrammar)
-parser2 = nltk.ChartParser(thaigrammar)
+_thaigrammar = nltk.CFG.fromstring(RULE)
+_rd_parser = nltk.RecursiveDescentParser(_thaigrammar)
+_parser2 = nltk.ChartParser(_thaigrammar)
 def generate_sent(n:int=1) -> list:
-    global thaigrammar
-    return [' '.join(i) for i in generate(thaigrammar, n=n)]
+    """
+    Generate Thai Sentences
+
+    :param int n: number sentences
+
+    :return: list sentences
+    :rtype: list
+    """
+    global _thaigrammar
+    return [' '.join(i) for i in generate(_thaigrammar, n=n)]
 
 def parser(list_word:list, limit:int = 1) -> list:
-    global parser2
+    """
+    Thai Parser from list word
+
+    :param list list_word: list of word
+    :param int limit: limit of parser
+
+    :return: list nltk.tree
+    :rtype: list
+    """
+    global _parser2
     i = 0
     _list_data = []
-    for tree in parser2.parse(list_word):
+    for tree in _parser2.parse(list_word):
         if i<limit:
             _list_data.append(tree)
         else:
@@ -64,5 +90,14 @@ def parser(list_word:list, limit:int = 1) -> list:
         i+=1
     return _list_data
 
-def word_seg_parser(txt:str) -> list:
-    return parser(word_tokenize(txt))
+def word_seg_parser(txt:str, limit:int = 1) -> list:
+    """
+    Thai Parser from text
+
+    :param str txt: Thai text
+    :param int limit: limit of parser
+
+    :return: list nltk.tree
+    :rtype: list
+    """
+    return parser(word_tokenize(txt), limit=limit)
